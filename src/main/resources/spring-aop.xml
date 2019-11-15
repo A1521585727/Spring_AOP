@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--  配置DOA  -->
+    <bean id="userDao" class="com.baizhi.rlt.dao.impl.UserDaoImpl"/>
+    <!--  配置Service  -->
+    <bean id="userService" class="com.baizhi.rlt.service.impl.UserServiceImpl">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+    <!-- 配置通知类 -->
+    <bean id="myActive" class="com.baizhi.rlt.util.MyActive"></bean>
+    <aop:config>
+        <!-- 配置切入点 -->
+        <aop:pointcut id="aop1" expression="execution(* com.baizhi.rlt.service.impl.UserServiceImpl.insert(..))"/>
+        <!-- 配置组装切面 -->
+        <aop:advisor advice-ref="myActive" pointcut-ref="aop1"/>
+
+    </aop:config>
+
+</beans>
